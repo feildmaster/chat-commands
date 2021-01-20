@@ -21,7 +21,7 @@ describe('parse.js', () => {
       },
     },
   }, {
-    input: '\nthis is a\nnewline test\n--foo bar --repeat one --repeat two -- ignore everything after this',
+    input: '\nthis is a\nnewline test\n--foo bar --repeat one --repeat two -- ignore everything after this --this is ignored',
     expected: {
       message: 'this is a\nnewline test',
       flags: {
