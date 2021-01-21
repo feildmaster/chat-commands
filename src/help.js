@@ -44,7 +44,7 @@ module.exports = class extends Command {
     if (command.flags.length) {
       embed.fields.push({
         name: '❯ Flags',
-        value: command.flags.map(i => `\`--${i.alias[0]}${i.usage ? ` ${i.usage}` : ''}\` - ${i.description}${i.default ? ` (default: \`${i.default}\`)` : ''}${
+        value: command.flags.map(i => `\`--${i.alias[0]}${i.usage ? ` ${i.usage}` : ''}\`${i.description ? ` - ${i.description}` : ''}${i.default ? ` (default: \`${i.default}\`)` : ''}${
           i.alias.length > 1 ? `\n • Aliases: ${i.alias.slice(1).map(a => `\`--${a}\``).join(', ')}` : ''
         }`).join('\n'),
       });
