@@ -30,7 +30,7 @@ describe('parse.js', () => {
       },
     },
   }, {
-    input: 'this is a newline flag test\n--foo bar\n--repeat one\ntwo\n--repeat three',
+    input: 'this is a newline flag test\n--foo bar\n--repeat one\ntwo --repeat three',
     expected: {
       message: 'this is a newline flag test',
       flags: {
