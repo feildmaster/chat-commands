@@ -12,6 +12,7 @@ module.exports = class Command {
     examples = [''],
     usage = '',
     description = '',
+    disabled = false,
     flags = [flagTemplate],
     handler = (context, args = [''], flags = {}) => 'Missing Handler',
   } = {}) {
@@ -22,6 +23,12 @@ module.exports = class Command {
     this.description = description;
     this.flags = flags.filter(_ => _.alias.filter(_ => _.trim()).length);
     this.handler = handler;
+    this.disabled = disabled;
+  }
+
+  get enabled() {
+    if (typeof this.disabled === 'function') return !this.disabled();
+    return !this.disabled;
   }
 
   handle(context, ...rest) {
