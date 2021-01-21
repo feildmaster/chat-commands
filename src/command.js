@@ -15,10 +15,8 @@ module.exports = class Command {
     flags = [flagTemplate],
     handler = (context, args = [''], flags = {}) => 'Missing Handler',
   } = {}) {
-    alias = alias.filter(_ => _.trim());
-    if (!alias.length) throw new Error('No aliases provided.');
     this.title = title;
-    this.alias = alias;
+    this.alias = alias.filter(_ => _.trim());
     this.examples = examples.filter(_ => _.trim());
     this.usage = usage;
     this.description = description;
@@ -30,3 +28,5 @@ module.exports = class Command {
     return this.handler(context, ...rest);
   }
 };
+
+module.exports.flagTemplate = flagTemplate;
