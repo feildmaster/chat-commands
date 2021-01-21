@@ -19,7 +19,7 @@ module.exports = class extends Command {
   }
 
   handle(context, args = []) {
-    const command = (args.length && (this.commands.find((cmd) => cmd.alias.includes(args[0].toLowerCase())) || `* Command \`${args[0]}\` not found.`)) || this;
+    const command = (args.length && (this.commands.find((cmd) => cmd.enabled && cmd.alias.includes(args[0].toLowerCase())) || `* Command \`${args[0]}\` not found.`)) || this;
     if (!(command instanceof Command)) return command;
     const label = args.length ? args[0] : context.command;
     const prefix = context.prefix;
