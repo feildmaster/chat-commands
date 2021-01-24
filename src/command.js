@@ -26,8 +26,8 @@ module.exports = class Command {
     this.disabled = disabled;
   }
 
-  get enabled() {
-    if (typeof this.disabled === 'function') return !this.disabled();
+  enabled(context) {
+    if (typeof this.disabled === 'function') return !this.disabled(context);
     return !this.disabled;
   }
 

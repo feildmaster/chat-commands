@@ -8,6 +8,7 @@ const defaults = {
   description: 'Show help text.',
   flags: [Command.flagTemplate],
   commands: [new Command()],
+  disabled: false,
 };
 
 defaults.commands.shift(); // Remove the first element, it's only for reference
@@ -19,7 +20,7 @@ module.exports = class extends Command {
   }
 
   handle(context, args = []) {
-    const command = (args.length && (this.commands.find((cmd) => cmd.enabled && cmd.alias.includes(args[0].toLowerCase())) || `* Command \`${args[0]}\` not found.`)) || this;
+    const command = (args.length && (this.commands.find((cmd) => cmd.enabled(context) && cmd.alias.includes(args[0].toLowerCase())) || `* Command \`${args[0]}\` not found.`)) || this;
     if (!(command instanceof Command)) return command;
     const label = args.length ? args[0] : context.command;
     const prefix = context.prefix;
