@@ -64,7 +64,7 @@ module.exports = class extends Command {
         value: this.commands.filter(_ => _ !== this && _.enabled(context))
           // .sort((a, b) => a.alias[0].localeCompare(b.alias[0], 'en', { sensitivity: 'base' }))
           .map(c => `\`${commandPrefix}${c.alias[0]}\`${c.description ? ` - ${c.description.split('\n')[0]}` : ''}`)
-          .join('\n'),
+          .join('\n') || '`None`',
       });
     }
 
