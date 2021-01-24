@@ -61,7 +61,7 @@ module.exports = class extends Command {
     if (!args.length && command === this) {
       embed.fields.push({
         name: '❯ Commands',
-        value: this.commands.filter(_ => _ !== this)
+        value: this.commands.filter(_ => _ !== this && _.enabled(context))
           // .sort((a, b) => a.alias[0].localeCompare(b.alias[0], 'en', { sensitivity: 'base' }))
           .map(c => `\`${commandPrefix}${c.alias[0]}\`${c.description ? ` - ${c.description.split('\n')[0]}` : ''}`)
           .join('\n'),
