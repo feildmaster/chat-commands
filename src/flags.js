@@ -9,8 +9,9 @@ module.exports = (string = '') => {
 
     const prev = flags[name];
     if (prev && value) {
-      if (Array.isArray(prev) && !prev.includes(value)) {
-        prev.push(value);
+      if (Array.isArray(prev)) {
+        // Only include unique values
+        if (!prev.includes(value)) prev.push(value);
       } else if (prev === true) { // Currently "true"? Set as value
         flags[name] = value;
       } else if (prev !== value) {  // Create a string array
