@@ -1,3 +1,5 @@
+const join = require('./join');
+
 const flagTemplate = {
   alias: [''],
   usage: '',
@@ -33,6 +35,12 @@ module.exports = class Command {
 
   handle(context, ...rest) {
     return this.handler(context, ...rest);
+  }
+
+  flag(key = '', flags = {}) {
+    const flag = this.flags.find(({ alias }) => alias.includes(key));
+    if (!flag) return flags[key];
+    return join(flags, ...flag.alias);
   }
 };
 
