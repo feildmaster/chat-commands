@@ -28,8 +28,8 @@ module.exports = class Command {
     this.disabled = disabled;
   }
 
-  enabled(context) {
-    if (typeof this.disabled === 'function') return !this.disabled(context);
+  enabled(context, ...rest) {
+    if (typeof this.disabled === 'function') return !this.disabled(context, ...rest);
     return !this.disabled;
   }
 
@@ -40,6 +40,7 @@ module.exports = class Command {
   flag(key = '', flags = {}) {
     const flag = this.flags.find(({ alias }) => alias.includes(key));
     if (!flag) return flags[key];
+    // TODO: calculate default?
     return join(flags, ...flag.alias);
   }
 };
