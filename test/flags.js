@@ -38,10 +38,19 @@ describe('parse.js', () => {
         repeat: ['one\ntwo', 'three'],
       },
     },
+  }, {
+    input: 'this is testing non-unique flag values --foo bar --foo bazz --foo',
+    unique: false,
+    expected: {
+      message: 'this is testing non-unique flag values',
+      flags: {
+        foo: ['bar', 'bazz'],
+      },
+    },
   }];
 
   tests.forEach((test) => {
-    const results = parse(test.input);
+    const results = parse(test.input, test.unique);
     const keys = Object.keys(test.expected.flags);
     
     it(`returns message: '${test.expected.message.replace(/\n/g, ' ')}'`, () => expect(results.message).to.equal(test.expected.message));
