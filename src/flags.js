@@ -1,4 +1,4 @@
-module.exports = (string = '') => {
+module.exports = (string = '', unique = true) => {
   const [message, ...parts] = string.split(/[ \n]+\-\-/g);
   const flags = {};
 
@@ -11,10 +11,10 @@ module.exports = (string = '') => {
     if (prev && value) {
       if (Array.isArray(prev)) {
         // Only include unique values
-        if (!prev.includes(value)) prev.push(value);
+        if (!unique || !prev.includes(value)) prev.push(value);
       } else if (prev === true) { // Currently "true"? Set as value
         flags[name] = value;
-      } else if (prev !== value) {  // Create a string array
+      } else if (!unique || prev !== value) {  // Create a string array
         flags[name] = [prev, value]
       }
     } else if (!prev) {
