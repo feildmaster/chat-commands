@@ -37,11 +37,13 @@ module.exports = class Command {
     return this.handler(context, ...rest);
   }
 
-  flag(key = '', flags = {}) {
+  flag(key = '', flags = {}, unique = true) {
     const flag = this.flags.find(({ alias }) => alias.includes(key));
     if (!flag) return flags[key];
-    // TODO: calculate default?
-    return join(flags, ...flag.alias);
+    return join(flags, ...flag.alias, {
+      unique,
+      default: flag.default || '',
+    });
   }
 };
 
