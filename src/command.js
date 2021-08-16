@@ -5,6 +5,7 @@ const flagTemplate = {
   usage: '',
   default: '',
   description: '',
+  converter: (data) => data,
 };
 
 module.exports = class Command {
@@ -23,7 +24,8 @@ module.exports = class Command {
     this.examples = examples.filter(_ => _.trim());
     this.usage = usage;
     this.description = description;
-    this.flags = flags.filter(_ => _.alias.filter(_ => _.trim()).length);
+    this.flags = flags.filter(_ => _.alias.filter(_ => _.trim()).length)
+      .map(val => ({ ...flagTemplate, ...val }));
     this.handler = handler;
     this.disabled = disabled;
   }
@@ -40,10 +42,10 @@ module.exports = class Command {
   flag(key = '', flags = {}, unique = true) {
     const flag = this.flags.find(({ alias }) => alias.includes(key));
     if (!flag) return flags[key];
-    return join(flags, ...flag.alias, {
+    return flag.converter(join(flags, ...flag.alias, {
       unique,
       default: flag.default || '',
-    });
+    }));
   }
 };
 
