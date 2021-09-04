@@ -1,5 +1,7 @@
 const Command = require('./command');
 
+const glue = '\n\n';
+
 const defaults = {
   title: 'Help',
   alias: ['help'],
@@ -47,14 +49,14 @@ module.exports = class extends Command {
         name: '❯ Flags',
         value: command.flags.map(i => `\`--${i.alias[0]}${i.usage ? ` ${i.usage}` : ''}\`${i.description ? ` - ${i.description}` : ''}${i.default ? ` (default: \`${i.default}\`)` : ''}${
           i.alias.length > 1 ? `\n • Aliases: ${i.alias.slice(1).map(a => `\`--${a}\``).join(', ')}` : ''
-        }`).join('\n'),
+        }`).join(glue),
       });
     }
 
     if (command.examples.length) {
       embed.fields.push({
         name: '❯ Examples',
-        value: command.examples.map(a => a.replace('<command>', commandText).replace('<prefix>', commandPrefix)).join('\n'),
+        value: command.examples.map(a => a.replace('<command>', commandText).replace('<prefix>', commandPrefix)).join(glue),
       });
     }
 
@@ -64,7 +66,7 @@ module.exports = class extends Command {
         value: this.commands.filter(_ => _ !== this && _.enabled(context))
           // .sort((a, b) => a.alias[0].localeCompare(b.alias[0], 'en', { sensitivity: 'base' }))
           .map(c => `\`${commandPrefix}${c.alias[0]}\`${c.description ? ` - ${c.description.split('\n')[0]}` : ''}`)
-          .join('\n') || '`None`',
+          .join(glue) || '`None`',
       });
     }
 
