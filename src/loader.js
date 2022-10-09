@@ -35,7 +35,7 @@ module.exports = (directory, {
       const command = require(loc);
       
       // Probably a class file, skip it
-      if (typeof command instanceof 'function') return;
+      if (typeof command === 'function') return;
 
       register(mapping, array, command, loc);
     }))
@@ -50,7 +50,7 @@ function register(
 ) {
   if (!(command instanceof Command)) return console.debug(`Bad file[${typeof command}]: ${file}`);
   const registered = command.alias.reduce((val, alias, i) => {
-    if (isString(alias)) {
+    if (!isString(alias)) {
       console.debug(`${file}:alias[${i}] missing`);
     } else if (mapping.has(alias)) {
       console.debug(`${file}:${alias} already registered`);
@@ -61,5 +61,6 @@ function register(
     return val;
   }, false);
   if (registered) array.push(command);
+  else console.debug(`${file} failed to register`);
   return registered;
 }
