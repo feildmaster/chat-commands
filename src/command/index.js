@@ -1,24 +1,10 @@
-const join = require('../join');
+const join = require('./join');
 
-const flagTemplate = {
-  alias: [''],
-  usage: '',
-  default: '',
-  description: '',
-  converter: (data) => data,
-};
-
-module.exports = class Command {
-  constructor({
-    title = '',
-    alias = [''],
-    examples = [''],
-    usage = '',
-    description = '',
-    disabled = false,
-    flags = [flagTemplate],
-    handler = (context, args = [''], flags = {}) => 'Missing Handler',
-  } = {}) {
+class Command {
+  constructor(params = defaults) {
+    const {
+      title, alias, examples, usage, description, disabled, flags, handler,
+    } = { ...defaults, ...params };
     this.title = title;
     this.alias = alias.filter(_ => _.trim());
     this.examples = examples.filter(_ => _.trim());
@@ -35,8 +21,8 @@ module.exports = class Command {
     return !this.disabled;
   }
 
-  handle(context, ...rest) {
-    return this.handler(context, ...rest);
+  handle(context, args = [], flags = {}) {
+    return this.handler(context, args, flags);
   }
 
   flag(key = '', flags = {}, unique = true) {
@@ -49,4 +35,26 @@ module.exports = class Command {
   }
 };
 
-module.exports.flagTemplate = flagTemplate;
+const flagTemplate = {
+  alias: [''],
+  usage: '',
+  default: '',
+  description: '',
+  converter: (data) => data,
+};
+
+const defaults = {
+  title: '',
+  alias: [''],
+  examples: [''],
+  usage: '',
+  description: '',
+  disabled: false,
+  flags: [flagTemplate],
+  handler: (context, args = [''], flags = {}) => 'Missing Handler',
+};
+defaults.commands.shift(); // Remove the first element, it's only for reference
+
+module.exports = Command;
+Command.defaults = defaults;
+Command.flagTemplate = flagTemplate;
