@@ -1,7 +1,7 @@
 module.exports = (flags = {}, ...keys) => {
   const {
     unique = true,
-    default: def = '',
+    default: def = false,
   } = typeof keys[keys.length - 1] === 'object' ? keys.pop() : {};
   const ret = [];
   function insert(entry) {
@@ -16,18 +16,11 @@ module.exports = (flags = {}, ...keys) => {
     }
   });
 
-  if (!ret.length) return def || false;
-  let hasTrue = ret.indexOf(true);
-  if (hasTrue >= 0) {
-    // Is only element true?
-    if (ret.length === 1) return true;
-    do {
-      ret.splice(hasTrue, 1); // Remove true
-      hasTrue = ret.indexOf(true); // Find next
-    } while(hasTrue >= 0);
-    if (!ret.length) return true; // All true
+  if (!ret.length) return def;
+  const res = ret.filter(v => v !== true);
+  switch (res.length) {
+    case 0: return true; // All true
+    case 1: return res[0]; // Only one element? Return raw
+    default: return res; // Results
   }
-  // Only one element? Return raw
-  if (ret.length === 1) return ret[0];
-  return ret;
 };
