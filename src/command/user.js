@@ -4,8 +4,8 @@ const {
 } = require('eris');
 const Command = require('./index');
 
-module.exports = class UserCommand extends Command {
-  constructor(info = {}, permissions = [
+class User extends Command {
+  constructor(info = Command.defaults, permissions = [
     Permissions.manageMessages,
   ]) {
     super(info);
@@ -27,3 +27,5 @@ module.exports = class UserCommand extends Command {
       super.enabled(context);
   }
 };
+
+module.exports = User;
