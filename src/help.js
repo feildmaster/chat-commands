@@ -1,28 +1,23 @@
 const Command = require('./command');
 
-const glue = '\n\n';
+const glue = '\n';
 
+
+const commandArray = [new Command()];
 const defaults = {
-  title: 'Help',
-  alias: ['help'],
-  examples: [''],
-  usage: '[command]',
-  description: 'Show help text.',
-  flags: [Command.flagTemplate],
-  commands: [new Command()],
-  disabled: false,
+  ...Command.defaults,
+  commands: commandArray,
 };
+commandArray.shift(); // Remove the first element, it's only for reference
 
-defaults.commands.shift(); // Remove the first element, it's only for reference
-
-module.exports = class extends Command {
+class Help extends Command {
   constructor(config = defaults) {
-    super({ ...defaults, ...config });
-    this.commands = config.commands || [];
+    super(config);
+    this.commands = validArray(config.commands) && config.commands || [];
   }
 
-  handle(context, args = []) {
-    const command = (args.length && (this.commands.find((cmd) => cmd.enabled(context) && cmd.alias.includes(args[0].toLowerCase())) || `* Command \`${args[0]}\` not found.`)) || this;
+  handle(context, args = [], flags = {}) {
+    const command = (args.length && (this.commands.find((cmd) => cmd.enabled(context, flags) && cmd.alias.includes(args[0].toLowerCase())) || `* Command \`${args[0]}\` not found.`)) || this;
     if (!(command instanceof Command)) return command;
     const label = args.length ? args[0] : context.command;
     const prefix = context.prefix;
@@ -56,7 +51,7 @@ module.exports = class extends Command {
     if (command.examples.length) {
       embed.fields.push({
         name: '❯ Examples',
-        value: command.examples.map(a => a.replace('<command>', commandText).replace('<prefix>', commandPrefix)).join(glue),
+        value: command.examples.map(a => a.replace('<command>', commandText).replace('<prefix>', prefix)).join(glue),
       });
     }
 
@@ -76,4 +71,11 @@ module.exports = class extends Command {
     });
     return { embed };
   }
+}
+
+module.exports = Help;
+Help.defaults = defaults;
+
+function validArray(array) {
+  return Array.isArray(array) && array !== commandArray;
 }
