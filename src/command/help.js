@@ -6,6 +6,9 @@ const glue = '\n';
 const commandArray = [new Command()];
 const defaults = {
   ...Command.defaults,
+  title: 'Help',
+  alias: ['help'],
+  description: 'Show help text.',
   commands: commandArray,
 };
 commandArray.shift(); // Remove the first element, it's only for reference
