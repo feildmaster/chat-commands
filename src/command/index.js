@@ -53,7 +53,6 @@ const defaults = {
   flags: [flagTemplate],
   handler: (context, args = [''], flags = {}) => 'Missing Handler',
 };
-defaults.commands.shift(); // Remove the first element, it's only for reference
 
 module.exports = Command;
 Command.defaults = defaults;
