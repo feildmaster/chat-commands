@@ -2,7 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const isString = require('./util/isString');
 const Command = require('./command');
-const HelpCommand = require('./help');
+const HelpCommand = require('./command/help');
 
 const defaultCommand = new Command();
 
@@ -48,10 +48,10 @@ function register(
   command = defaultCommand,
   file = '',
 ) {
-  if (!(command instanceof Command) || command === defaultCommand) return console.debug(`Bad file[${typeof command}]: ${file}`);
+  if (!(command instanceof Command)) return console.debug(`Bad file[${typeof command}]: ${file}`);
   const registered = command.alias.reduce((val, alias, i) => {
     if (isString(alias)) {
-      console.debug(`${file}:alias[${i}] invalid`);
+      console.debug(`${file}:alias[${i}] missing`);
     } else if (mapping.has(alias)) {
       console.debug(`${file}:${alias} already registered`);
     } else {
