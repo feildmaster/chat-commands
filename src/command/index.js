@@ -1,4 +1,4 @@
-const join = require('./join');
+const join = require('../join');
 
 const flagTemplate = {
   alias: [''],
