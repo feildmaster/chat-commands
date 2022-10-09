@@ -2,7 +2,6 @@ const Command = require('./index');
 
 const glue = '\n';
 
-
 const commandArray = [new Command()];
 const defaults = {
   ...Command.defaults,

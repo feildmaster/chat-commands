@@ -1,6 +1,5 @@
 const fs = require('fs').promises;
 const path = require('path');
-const isString = require('./util/isString');
 const Command = require('./command');
 const HelpCommand = require('./command/help');
 
@@ -63,4 +62,8 @@ function register(
   if (registered) array.push(command);
   else console.debug(`${file} failed to register`);
   return registered;
+}
+
+function isString(val) {
+  return typeof val === 'string' && val.length;
 }
