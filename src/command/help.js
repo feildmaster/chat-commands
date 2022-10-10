@@ -53,7 +53,11 @@ class Help extends Command {
     if (command.examples.length) {
       embed.fields.push({
         name: '❯ Examples',
-        value: command.examples.map(a => a.replace('<command>', commandText).replace('<prefix>', prefix)).join(glue),
+        value: command.examples.map(a => a
+            .replace('<command>', commandText)
+            .replace('<prefix>', prefix)
+            .replace('<label>', label)
+          ).join(glue),
       });
     }
 
