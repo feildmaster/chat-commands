@@ -3,18 +3,21 @@ const Command = require('./index');
 const glue = '\n';
 
 const commandArray = [new Command()];
-const defaults = {
-  ...Command.defaults,
+const partial = {
   title: 'Help',
   alias: ['help'],
   description: 'Show help text.',
   commands: commandArray,
 };
+const defaults = {
+  ...Command.defaults,
+  ...partial,
+};
 commandArray.shift(); // Remove the first element, it's only for reference
 
 class Help extends Command {
   constructor(config = defaults) {
-    super(config);
+    super({ ...partial, ...config });
     this.commands = validArray(config.commands) && config.commands || [];
   }
 
