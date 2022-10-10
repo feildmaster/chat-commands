@@ -38,15 +38,21 @@ class Help extends Command {
     };
 
     if (command.description) {
-      embed.description = command.description;
+      embed.description = command.description.replace(/<label>/g, label);
     }
 
     if (command.flags.length) {
       embed.fields.push({
         name: '❯ Flags',
-        value: command.flags.map(i => `\`--${i.alias[0]}${i.usage ? ` ${i.usage}` : ''}\`${i.description ? ` - ${i.description}` : ''}${i.default ? ` (default: \`${i.default}\`)` : ''}${
-          i.alias.length > 1 ? `\n • Aliases: ${i.alias.slice(1).map(a => `\`--${a}\``).join(', ')}` : ''
-        }`).join(glue),
+        value: command.flags.map(i => [
+            // `--alias[ usage]`[ description][ (default)][\n Aliases]
+            `\`--${i.alias[0]}`,
+            i.usage ? ` ${i.usage}` : '',
+            '`',
+            i.description ? ` - ${i.description.replace(/<label>/g, label)}` : '',
+            i.default ? ` (default: \`${i.default}\`)` : '',
+            i.alias.length > 1 ? `\n • Aliases: ${i.alias.slice(1).map(a => `\`--${a}\``).join(', ')}` : '',
+        ].join('')).join(glue),
       });
     }
 
@@ -56,7 +62,7 @@ class Help extends Command {
         value: command.examples.map(a => a
             .replace('<command>', commandText)
             .replace('<prefix>', prefix)
-            .replace('<label>', label)
+            .replace(/<label>/g, label)
           ).join(glue),
       });
     }
