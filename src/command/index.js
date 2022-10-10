@@ -30,7 +30,7 @@ class Command {
     if (!flag) return flags[key];
     return flag.converter(join(flags, ...flag.alias, {
       unique,
-      default: flag.default || '',
+      default: flag.default,
     }));
   }
 };
